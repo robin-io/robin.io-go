@@ -107,7 +107,6 @@ func (n *Notify) SendMessage(channel string, content map[string]interface{}) err
 	n.Conn.SendText(string(body))
 
 	return nil
-
 }
 func (n *Notify) SendConversationMessage(channel, conversation_id string, content map[string]interface{}) error {
 	msg := Message{
@@ -126,5 +125,4 @@ func (n *Notify) SendConversationMessage(channel, conversation_id string, conten
 	n.Conn.SendText(string(body))
 
 	return nil
-
 }
