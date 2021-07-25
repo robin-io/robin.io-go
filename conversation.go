@@ -12,8 +12,8 @@ import (
 func (r *Robin) CreateConversation(senderName, senderId, receiverId, receiverName string) (interface{}, error) {
 	body, err := json.Marshal(map[string]string{
 		"sender_name":   senderName,
-		"sender_id":     senderId,
-		"receiver_id":   receiverId,
+		"sender_token":     senderId,
+		"receiver_token":   receiverId,
 		"receiver_name": receiverName,
 	})
 
@@ -44,7 +44,7 @@ func (r *Robin) CreateConversation(senderName, senderId, receiverId, receiverNam
 		return nil, err
 	}
 
-	var newBody Response
+	var newBody ConversationResponse
 
 	if err := json.Unmarshal(body, &newBody); err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (r *Robin) CreateConversation(senderName, senderId, receiverId, receiverNam
 		return nil, errors.New(newBody.Msg)
 	}
 
-	return newBody.Data, nil
+	return newBody.ConversationData, nil
 }
 
 func (r *Robin) GetConversationMessages(id string) (interface{}, error) {

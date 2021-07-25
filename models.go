@@ -21,8 +21,35 @@ type Response struct {
 	Data     UserTokenResponse `json:"data"`
 }
 
+type ConversationResponse struct {
+	Error    bool        `json:"error"`
+	Msg      string      `json:"msg"`
+	ConversationData ConversationResponseData `json:"data"`
+}
+
+type ConversationResponseData struct {
+	Id            string                 `json:"_id"`
+	CreatedAt     time.Time              `json:"created_at"`
+	UpdatedAt     time.Time              `json:"updated_at"`
+	Data interface{} `json:"data"`
+	IsGroup bool `json:"is_group"`
+	Moderator Participant `json:"moderator"`
+	Name string `json:"name"`
+	Participants []Participant `json:"participants"`
+	ReceiverName string `json:"receiver_name"`
+	ReceiverToken string `json:"receiver_token"`
+	SenderName string `json:"sender_name"`
+	SenderToken string `json:"sender_token"`
+}
+
+type Participant struct {
+	UserToken   string                 `json:"user_token"`
+	IsModerator bool                   `json:"is_moderator"`
+	MetaData    map[string]interface{} `json:"meta_data"`
+}
+
 type UserTokenResponse struct {
-	Id            string                 `json:"id"`
+	Id            string                 `json:"_id"`
 	Conversations []interface{}          `json:"conversations"`
 	CreatedAt     time.Time              `json:"created_at"`
 	UpdatedAt     time.Time              `json:"updated_at"`

@@ -7,11 +7,11 @@ import (
 
 func TestConversationCreation(t *testing.T) {
 	notify := Robin{
-		Secret: "NT-AygOqSqOAkTXqBoaxCvyOWarmgthOgLSFVlc",
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
 		Tls:    true,
 	}
 
-	conv, err := notify.CreateConversation("elvis", "elvis-doc", "elvis-doc", "jesse")
+	conv, err := notify.CreateConversation("elvis", "YFXOKVyKBGvHxuBaqKgDWOhE", "YFXOKVyKBGvHxuBaqKgDWOhE", "jesse")
 
 	if err != nil {
 		t.Error(err)
