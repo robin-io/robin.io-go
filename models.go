@@ -50,7 +50,7 @@ type Participant struct {
 
 type UserTokenResponse struct {
 	Id            string                 `json:"_id"`
-	Conversations []interface{}          `json:"conversations"`
+	Conversations []ConversationResponseData          `json:"conversations"`
 	CreatedAt     time.Time              `json:"created_at"`
 	UpdatedAt     time.Time              `json:"updated_at"`
 	UserToken     string                 `json:"user_token"`

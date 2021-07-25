@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestCreateUserToken(t *testing.T) {
+func TestRobin_CreateUserToken(t *testing.T) {
 	robin := Robin{
 		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
 		Tls:    true,
@@ -20,4 +20,20 @@ func TestCreateUserToken(t *testing.T) {
 	}
 
 	fmt.Println(token)
+}
+
+
+func TestRobin_GetUserToken(t *testing.T) {
+	robin := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	res, err := robin.GetUserToken("YFXOKVyKBGvHxuBaqKgDWOhE")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(res)
 }

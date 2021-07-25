@@ -81,15 +81,15 @@ func (r *Robin) GetConversationMessages(id string) (interface{}, error) {
 		return nil, err
 	}
 
-	var new_body Response
+	var newBody Response
 
-	if err := json.Unmarshal(body, &new_body); err != nil {
+	if err := json.Unmarshal(body, &newBody); err != nil {
 		return nil, err
 	}
 
-	if new_body.Error {
-		return nil, errors.New(new_body.Msg)
+	if newBody.Error {
+		return nil, errors.New(newBody.Msg)
 	}
 
-	return new_body.Data, nil
+	return newBody.Data, nil
 }
