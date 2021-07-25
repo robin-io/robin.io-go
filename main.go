@@ -1,4 +1,4 @@
-package go_notify
+package robin
 
 import (
 	"encoding/json"
@@ -8,57 +8,29 @@ import (
 )
 
 var (
-	base_url = "https://not.acumendev.xyz/api/v1"
-	url      = "not.acumendev.xyz"
-	ws       = fmt.Sprintf(`ws://%s/ws`, url)
-	wss      = fmt.Sprintf(`wss://%s/ws`, url)
+	baseUrl = "https://robbin-api.herokuapp.com/api/v1"
+	url     = "robbin-api.herokuapp.com"
+	ws      = fmt.Sprintf(`ws://%s/ws`, url)
+	wss     = fmt.Sprintf(`wss://%s/ws`, url)
 )
 
-type Notify struct {
-	Secret string
-	Tls    bool
-	Conn   *gowebsocket.Socket
-}
 
-type Response struct {
-	Error    bool        `json:"error"`
-	Document Document    `json:"document"`
-	Msg      string      `json:"msg"`
-	Data     interface{} `json:"data"`
-}
 
-type Document struct {
-	ID            string        `json:"_id"`
-	Conversations []interface{} `json:"conversations"`
-	Data          interface{}   `json:"data"`
-	Name          string        `json:"name"`
-}
 
-type Message struct {
-	Type           int                    `json:"type"`
-	Channel        string                 `json:"channel"`
-	Content        map[string]interface{} `json:"content"`
-	ConversationId string                 `json:"conversation_id"`
-}
 
-type Fxn func(gowebsocket.Socket)
-type ErrFxn func(error, gowebsocket.Socket)
-type MsgFxn func(string, gowebsocket.Socket)
-type ByteFxn func([]byte, gowebsocket.Socket)
-
-func (n *Notify) Connect(connected Fxn,
+func (r *Robin) Connect(connected Fxn,
 	connect_error, disconnected ErrFxn,
 	text_recieved, ping, pong MsgFxn,
 	binary ByteFxn) (*gowebsocket.Socket, error) {
 
 	var conn_string string
 
-	if n.Tls {
+	if r.Tls {
 		conn_string = wss
 	} else {
 		conn_string = ws
 	}
-	socket := gowebsocket.New(fmt.Sprintf(`%s/%s`, conn_string, n.Secret))
+	socket := gowebsocket.New(fmt.Sprintf(`%s/%s`, conn_string, r.Secret))
 
 	socket.OnConnected = connected
 	socket.OnConnectError = connect_error
@@ -69,11 +41,11 @@ func (n *Notify) Connect(connected Fxn,
 	socket.OnDisconnected = disconnected
 
 	socket.Connect()
-	n.Conn = &socket
+	r.Conn = &socket
 	return &socket, nil
 }
 
-func (n *Notify) Subscribe(channel string) error {
+func (r *Robin) Subscribe(channel string) error {
 	msg := Message{
 		Type:    0,
 		Channel: channel,
@@ -86,12 +58,12 @@ func (n *Notify) Subscribe(channel string) error {
 		return err
 	}
 
-	n.Conn.SendText(string(body))
+	r.Conn.SendText(string(body))
 
 	return nil
 }
 
-func (n *Notify) SendMessage(channel string, content map[string]interface{}) error {
+func (r *Robin) SendMessage(channel string, content map[string]interface{}) error {
 	msg := Message{
 		Type:    1,
 		Channel: channel,
@@ -104,11 +76,11 @@ func (n *Notify) SendMessage(channel string, content map[string]interface{}) err
 		return err
 	}
 
-	n.Conn.SendText(string(body))
+	r.Conn.SendText(string(body))
 
 	return nil
 }
-func (n *Notify) SendConversationMessage(channel, conversation_id string, content map[string]interface{}) error {
+func (r *Robin) SendConversationMessage(channel, conversation_id string, content map[string]interface{}) error {
 	msg := Message{
 		Type:           1,
 		Channel:        channel,
@@ -122,7 +94,7 @@ func (n *Notify) SendConversationMessage(channel, conversation_id string, conten
 		return err
 	}
 
-	n.Conn.SendText(string(body))
+	r.Conn.SendText(string(body))
 
 	return nil
 }

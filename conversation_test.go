@@ -1,4 +1,4 @@
-package go_notify
+package robin
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 func TestConversationCreation(t *testing.T) {
-	notify := Notify{
+	notify := Robin{
 		Secret: "NT-AygOqSqOAkTXqBoaxCvyOWarmgthOgLSFVlc",
 		Tls:    true,
 	}

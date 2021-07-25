@@ -1,4 +1,4 @@
-package go_notify
+package robin
 
 import (
 	"bytes"
@@ -9,12 +9,12 @@ import (
 	"net/http"
 )
 
-func (n *Notify) CreateConversation(sender_name, sender_id, reciever_id, reciever_name string) (interface{}, error) {
+func (r *Robin) CreateConversation(senderName, senderId, receiverId, receiverName string) (interface{}, error) {
 	body, err := json.Marshal(map[string]string{
-		"sender_name":   sender_name,
-		"sender_id":     sender_id,
-		"reciever_id":   reciever_id,
-		"reciever_name": reciever_name,
+		"sender_name":   senderName,
+		"sender_id":     senderId,
+		"receiver_id":   receiverId,
+		"receiver_name": receiverName,
 	})
 
 	if err != nil {
@@ -23,13 +23,13 @@ func (n *Notify) CreateConversation(sender_name, sender_id, reciever_id, recieve
 
 	client := &http.Client{}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf(`%s/conversation`, base_url), bytes.NewBuffer(body))
+	req, err := http.NewRequest("POST", fmt.Sprintf(`%s/conversation`, baseUrl), bytes.NewBuffer(body))
 
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("x-api-key", n.Secret)
+	req.Header.Set("x-api-key", r.Secret)
 
 	resp, err := client.Do(req)
 
@@ -44,29 +44,29 @@ func (n *Notify) CreateConversation(sender_name, sender_id, reciever_id, recieve
 		return nil, err
 	}
 
-	var new_body Response
+	var newBody Response
 
-	if err := json.Unmarshal(body, &new_body); err != nil {
+	if err := json.Unmarshal(body, &newBody); err != nil {
 		return nil, err
 	}
 
-	if new_body.Error {
-		return nil, errors.New(new_body.Msg)
+	if newBody.Error {
+		return nil, errors.New(newBody.Msg)
 	}
 
-	return new_body.Data, nil
+	return newBody.Data, nil
 }
 
-func (n *Notify) GetConversationMessages(id string) (interface{}, error) {
+func (r *Robin) GetConversationMessages(id string) (interface{}, error) {
 	client := &http.Client{}
 
-	req, err := http.NewRequest("GET", fmt.Sprintf(`%s/conversation/messages/%s`, base_url, id), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf(`%s/conversation/messages/%s`, baseUrl, id), nil)
 
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("x-api-key", n.Secret)
+	req.Header.Set("x-api-key", r.Secret)
 
 	resp, err := client.Do(req)
 

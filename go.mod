@@ -1,4 +1,4 @@
-module github.com/acumendigital/go_notify
+module github.com/robin-io/robin.io-go
 
 go 1.16
 
