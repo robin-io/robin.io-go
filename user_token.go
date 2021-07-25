@@ -93,3 +93,50 @@ func (r *Robin) GetUserToken(userToken string) (interface{}, error) {
 
 	return newBody.Data, nil
 }
+
+// sync UserToken (Update)
+
+func (r *Robin) SyncUserToken(details UserToken) (UserTokenResponse, error) {
+	body, err := json.Marshal(map[string]interface{}{
+		"meta_data": details.MetaData,
+	})
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/%s`, baseUrl, details.UserToken), bytes.NewBuffer(body))
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	req.Header.Set("x-api-key", r.Secret)
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	var newBody Response
+
+	if err := json.Unmarshal(body, &newBody); err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	if newBody.Error {
+		return UserTokenResponse{}, errors.New(newBody.Msg)
+	}
+
+	return newBody.Data, nil
+}

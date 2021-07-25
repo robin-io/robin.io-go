@@ -37,3 +37,23 @@ func TestRobin_GetUserToken(t *testing.T) {
 
 	fmt.Println(res)
 }
+
+func TestRobin_SyncUserToken(t *testing.T) {
+	robin := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	res, err := robin.SyncUserToken(UserToken{
+		UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE",
+		MetaData: map[string]interface{}{
+			"email":"elvis@acumen.com.ng",
+		},
+	})
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(res)
+}

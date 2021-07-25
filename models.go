@@ -12,6 +12,7 @@ type Robin struct {
 }
 
 type UserToken struct {
+	UserToken     string                 `json:"user_token"`
 	MetaData map[string]interface{} `json:"meta_data"`
 }
 
