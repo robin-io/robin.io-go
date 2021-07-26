@@ -9,11 +9,11 @@ import (
 	"net/http"
 )
 
-func (r *Robin) CreateConversation(senderName, senderId, receiverId, receiverName string) (interface{}, error) {
+func (r *Robin) CreateConversation(senderName, senderToken, receiverToken, receiverName string) (interface{}, error) {
 	body, err := json.Marshal(map[string]string{
 		"sender_name":   senderName,
-		"sender_token":     senderId,
-		"receiver_token":   receiverId,
+		"sender_token":     senderToken,
+		"receiver_token":   receiverToken,
 		"receiver_name": receiverName,
 	})
 
