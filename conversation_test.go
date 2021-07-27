@@ -35,3 +35,18 @@ func TestRobin_GetConversationMessages(t *testing.T) {
 
 	fmt.Println(messages)
 }
+
+func TestRobin_SearchConversation(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	messages, err := notify.SearchConversation("610041ac411c882b47d633db", "hi")
+
+	if err != nil {
+		t.Error(err)
+	}else {
+		fmt.Println(messages)
+	}
+}
