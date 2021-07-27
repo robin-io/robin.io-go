@@ -19,3 +19,19 @@ func TestConversationCreation(t *testing.T) {
 
 	fmt.Println(conv)
 }
+
+
+func TestRobin_GetConversationMessages(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	messages, err := notify.GetConversationMessages("610041ac411c882b47d633db")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(messages)
+}

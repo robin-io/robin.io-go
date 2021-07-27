@@ -57,13 +57,16 @@ func (r *Robin) CreateConversation(senderName, senderToken, receiverToken, recei
 	return newBody.ConversationData, nil
 }
 
-func (r *Robin) GetConversationMessages(id string) (interface{}, error) {
+func (r *Robin) GetConversationMessages(id string) ([]MessageResponseData, error) {
+	if len(id) == 0 {
+		return []MessageResponseData{}, errors.New("id cannot be empty")
+	}
 	client := &http.Client{}
 
 	req, err := http.NewRequest("GET", fmt.Sprintf(`%s/conversation/messages/%s`, baseUrl, id), nil)
 
 	if err != nil {
-		return nil, err
+		return []MessageResponseData{}, err
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
@@ -71,25 +74,25 @@ func (r *Robin) GetConversationMessages(id string) (interface{}, error) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		return nil, err
+		return []MessageResponseData{}, err
 	}
 
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return []MessageResponseData{}, err
 	}
 
-	var newBody Response
+	var newBody MessageResponse
 
 	if err := json.Unmarshal(body, &newBody); err != nil {
-		return nil, err
+		return []MessageResponseData{}, err
 	}
 
 	if newBody.Error {
-		return nil, errors.New(newBody.Msg)
+		return []MessageResponseData{}, errors.New(newBody.Msg)
 	}
 
-	return newBody.Data, nil
+	return newBody.MessageData, nil
 }
