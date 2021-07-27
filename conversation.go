@@ -9,11 +9,11 @@ import (
 	"net/http"
 )
 
-func (r *Robin) CreateConversation(senderName, senderId, receiverId, receiverName string) (interface{}, error) {
+func (r *Robin) CreateConversation(senderName, senderToken, receiverToken, receiverName string) (interface{}, error) {
 	body, err := json.Marshal(map[string]string{
 		"sender_name":   senderName,
-		"sender_token":     senderId,
-		"receiver_token":   receiverId,
+		"sender_token":     senderToken,
+		"receiver_token":   receiverToken,
 		"receiver_name": receiverName,
 	})
 
@@ -81,15 +81,15 @@ func (r *Robin) GetConversationMessages(id string) (interface{}, error) {
 		return nil, err
 	}
 
-	var new_body Response
+	var newBody Response
 
-	if err := json.Unmarshal(body, &new_body); err != nil {
+	if err := json.Unmarshal(body, &newBody); err != nil {
 		return nil, err
 	}
 
-	if new_body.Error {
-		return nil, errors.New(new_body.Msg)
+	if newBody.Error {
+		return nil, errors.New(newBody.Msg)
 	}
 
-	return new_body.Data, nil
+	return newBody.Data, nil
 }
