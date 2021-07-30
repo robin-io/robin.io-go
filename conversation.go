@@ -57,7 +57,7 @@ func (r *Robin) CreateConversation(senderName, senderToken, receiverToken, recei
 	return newBody.ConversationData, nil
 }
 
-func (r *Robin) CreateGroupConversation(name string, moderator UserToken, participants []UserToken) (interface{}, error) {
+func (r *Robin) CreateGroupConversation(name string, moderator UserToken, participants []UserToken) (ConversationResponseData, error) {
 	body, err := json.Marshal(map[string]interface{}{
 		"name" : name,
 		"moderator":moderator,
@@ -65,7 +65,7 @@ func (r *Robin) CreateGroupConversation(name string, moderator UserToken, partic
 	})
 
 	if err != nil {
-		return nil, err
+		return ConversationResponseData{}, err
 	}
 
 	client := &http.Client{}
@@ -73,7 +73,7 @@ func (r *Robin) CreateGroupConversation(name string, moderator UserToken, partic
 	req, err := http.NewRequest("POST", fmt.Sprintf(`%s/chat/conversation/group`, baseUrl), bytes.NewBuffer(body))
 
 	if err != nil {
-		return nil, err
+		return ConversationResponseData{}, err
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
@@ -81,24 +81,24 @@ func (r *Robin) CreateGroupConversation(name string, moderator UserToken, partic
 	resp, err := client.Do(req)
 
 	if err != nil {
-		return nil, err
+		return ConversationResponseData{}, err
 	}
 
 	defer resp.Body.Close()
 
 	body, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return ConversationResponseData{}, err
 	}
 	fmt.Println(string(body))
 	var newBody ConversationResponse
 
 	if err := json.Unmarshal(body, &newBody); err != nil {
-		return nil, err
+		return ConversationResponseData{}, err
 	}
 
 	if newBody.Error {
-		return nil, errors.New(newBody.Msg)
+		return ConversationResponseData{}, errors.New(newBody.Msg)
 	}
 
 	return newBody.ConversationData, nil
