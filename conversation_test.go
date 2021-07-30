@@ -20,6 +20,23 @@ func TestConversationCreation(t *testing.T) {
 	fmt.Println(conv)
 }
 
+func TestGroupConversationCreation(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	conv, err := notify.CreateGroupConversation("Elvis & sons",
+		UserToken{UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE"},
+		[]UserToken{{UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE"},
+		})
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(conv)
+}
 
 func TestRobin_GetConversationMessages(t *testing.T) {
 	notify := Robin{
@@ -46,7 +63,7 @@ func TestRobin_SearchConversation(t *testing.T) {
 
 	if err != nil {
 		t.Error(err)
-	}else {
+	} else {
 		fmt.Println(messages)
 	}
 }
