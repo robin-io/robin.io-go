@@ -20,6 +20,22 @@ func TestConversationCreation(t *testing.T) {
 	fmt.Println(conv)
 }
 
+func TestGroupConversationCreation(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	conv, err := notify.CreateGroupConversation("Elvis & sons",
+		UserToken{UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE"},
+		[]UserToken{{UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE"},
+		})
+
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(conv)
+}
 
 func TestRobin_GetConversationMessages(t *testing.T) {
 	notify := Robin{
@@ -46,7 +62,56 @@ func TestRobin_SearchConversation(t *testing.T) {
 
 	if err != nil {
 		t.Error(err)
-	}else {
+	} else {
 		fmt.Println(messages)
 	}
+}
+
+func TestRobin_DeleteMessage(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	err := notify.DeleteMessage("60c000df26dcd315e219b0f3")
+
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+
+func TestRobin_AssignGroupModerator(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	conversation, err := notify.AssignGroupModerator("YFXOKVyKBGvHxuBaqKgDWOhE", "6103ee6628e71d0daf8dcd03")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(conversation)
+}
+
+func TestRobin_AddGroupParticipants(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	conversation, err := notify.AddGroupParticipants("6103ee6628e71d0daf8dcd03",
+		[]UserToken{
+			{
+				UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE",
+			},
+		})
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(conversation)
 }
