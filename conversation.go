@@ -150,3 +150,45 @@ func (r *Robin) SearchConversation(id, text string) ([]MessageResponseData, erro
 
 	return newBody.MessageData, nil
 }
+
+func (r *Robin) DeleteMessage(id string) error {
+	if len(id) == 0 {
+		return errors.New("id cannot be empty")
+	}
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("DELETE", fmt.Sprintf(`%s/chat/message/%s`, baseUrl, id), nil)
+
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("x-api-key", r.Secret)
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return err
+	}
+
+	var newBody MessageResponse
+
+	if err := json.Unmarshal(body, &newBody); err != nil {
+		return err
+	}
+
+	if newBody.Error {
+		return errors.New(newBody.Msg)
+	}
+
+	return nil
+}

@@ -50,3 +50,16 @@ func TestRobin_SearchConversation(t *testing.T) {
 		fmt.Println(messages)
 	}
 }
+
+func TestRobin_DeleteMessage(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	err := notify.DeleteMessage("60c000df26dcd315e219b0f3")
+
+	if err != nil {
+		t.Error(err)
+	}
+}
