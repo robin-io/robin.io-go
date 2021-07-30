@@ -34,7 +34,6 @@ func TestGroupConversationCreation(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
 	fmt.Println(conv)
 }
 
@@ -79,4 +78,40 @@ func TestRobin_DeleteMessage(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+
+func TestRobin_AssignGroupModerator(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	conversation, err := notify.AssignGroupModerator("YFXOKVyKBGvHxuBaqKgDWOhE", "6103ee6628e71d0daf8dcd03")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(conversation)
+}
+
+func TestRobin_AddGroupParticipants(t *testing.T) {
+	notify := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	conversation, err := notify.AddGroupParticipants("6103ee6628e71d0daf8dcd03",
+		[]UserToken{
+			{
+				UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE",
+			},
+		})
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(conversation)
 }

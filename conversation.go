@@ -238,3 +238,102 @@ func (r *Robin) DeleteMessage(id string) error {
 
 	return nil
 }
+
+func (r *Robin) AssignGroupModerator(userToken, groupId string) (ConversationResponseData, error){
+	if len(userToken) == 0 {
+		return ConversationResponseData{}, errors.New("userToken can not be empty")
+	}
+	body, err := json.Marshal(map[string]string{
+		"user_token": userToken,
+	})
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/conversation/group/assign_moderator/%s`, baseUrl, groupId), bytes.NewBuffer(body))
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	req.Header.Set("x-api-key", r.Secret)
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err = ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	var newBody ConversationResponse
+
+	if err := json.Unmarshal(body, &newBody); err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	if newBody.Error {
+		return ConversationResponseData{}, errors.New(newBody.Msg)
+	}
+
+	return newBody.ConversationData, nil
+}
+
+func (r *Robin) AddGroupParticipants(groupId string, participants []UserToken) (ConversationResponseData, error) {
+	if len(groupId) == 0 {
+		return ConversationResponseData{}, errors.New("groupId cannot be empty")
+	}
+
+	body, err := json.Marshal(map[string]interface{}{
+		"participants": participants,
+	})
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/conversation/group/add_participants/%s`, baseUrl, groupId), bytes.NewBuffer(body))
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	req.Header.Set("x-api-key", r.Secret)
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err = ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	var newBody ConversationResponse
+
+	if err := json.Unmarshal(body, &newBody); err != nil {
+		return ConversationResponseData{}, err
+	}
+
+	if newBody.Error {
+		return ConversationResponseData{}, errors.New(newBody.Msg)
+	}
+
+	return newBody.ConversationData, nil
+}
