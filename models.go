@@ -78,10 +78,10 @@ type Message struct {
 	ConversationId string                 `json:"conversation_id"`
 }
 
-type Fxn func(gowebsocket.Socket)
-type ErrFxn func(error, gowebsocket.Socket)
-type MsgFxn func(string, gowebsocket.Socket)
-type ByteFxn func([]byte, gowebsocket.Socket)
+type Channel struct {
+	Name string `json:"name"`
+	PublicName string `json:"public_name"`
+}
 
 type MessageResponseData struct {
 	Id             string                 `json:"_id"`

@@ -1,9 +1,7 @@
 package robin
 
 import (
-	"encoding/json"
 	"fmt"
-
 	"github.com/sacOO7/gowebsocket"
 )
 
@@ -14,87 +12,11 @@ var (
 	wss     = fmt.Sprintf(`wss://%s/ws`, url)
 )
 
+type Fxn func(gowebsocket.Socket)
+type ErrFxn func(error, gowebsocket.Socket)
+type MsgFxn func(string, gowebsocket.Socket)
+type ByteFxn func([]byte, gowebsocket.Socket)
 
 
 
 
-func (r *Robin) Connect(connected Fxn,
-	connect_error, disconnected ErrFxn,
-	text_recieved, ping, pong MsgFxn,
-	binary ByteFxn) (*gowebsocket.Socket, error) {
-
-	var conn_string string
-
-	if r.Tls {
-		conn_string = wss
-	} else {
-		conn_string = ws
-	}
-	socket := gowebsocket.New(fmt.Sprintf(`%s/%s`, conn_string, r.Secret))
-
-	socket.OnConnected = connected
-	socket.OnConnectError = connect_error
-	socket.OnTextMessage = text_recieved
-	socket.OnBinaryMessage = binary
-	socket.OnPingReceived = ping
-	socket.OnPongReceived = pong
-	socket.OnDisconnected = disconnected
-
-	socket.Connect()
-	r.Conn = &socket
-	return &socket, nil
-}
-
-func (r *Robin) Subscribe(channel string) error {
-	msg := Message{
-		Type:    0,
-		Channel: channel,
-		Content: nil,
-	}
-
-	body, err := json.Marshal(msg)
-
-	if err != nil {
-		return err
-	}
-
-	r.Conn.SendText(string(body))
-
-	return nil
-}
-
-func (r *Robin) SendMessage(channel string, content map[string]interface{}) error {
-	msg := Message{
-		Type:    1,
-		Channel: channel,
-		Content: content,
-	}
-
-	body, err := json.Marshal(msg)
-
-	if err != nil {
-		return err
-	}
-
-	r.Conn.SendText(string(body))
-
-	return nil
-}
-func (r *Robin) SendConversationMessage(channel, conversation_id string, content map[string]interface{}) error {
-	msg := Message{
-		Type:           1,
-		Channel:        channel,
-		Content:        content,
-		ConversationId: conversation_id,
-	}
-
-	body, err := json.Marshal(msg)
-
-	if err != nil {
-		return err
-	}
-
-	r.Conn.SendText(string(body))
-
-	return nil
-}
