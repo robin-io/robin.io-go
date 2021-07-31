@@ -38,6 +38,17 @@ func TestRobin_Connect(t *testing.T) {
 	fmt.Println(conn)
 }
 
+func TestRobin_CreateChannel(t *testing.T) {
+	robin := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	chann := robin.CreateChannel("egg bread")
+
+	fmt.Println(chann)
+}
+
 func connected(soc gowebsocket.Socket){
 	fmt.Println("connected", soc)
 }

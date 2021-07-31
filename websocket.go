@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/sacOO7/gowebsocket"
+	"strings"
 )
 
 func (r *Robin) Connect() (*gowebsocket.Socket, error) {
@@ -87,7 +88,7 @@ func (r *Robin) SendConversationMessage(channel Channel, conversationId string, 
 func (r *Robin) CreateChannel(name string) Channel {
 	channel := Channel{
 		Name: name,
-		PublicName: r.Secret + "-" + name,
+		PublicName: r.Secret + "-" + strings.ReplaceAll(name, " ", ""),
 	}
 	return channel
 }
