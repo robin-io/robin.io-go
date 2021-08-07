@@ -2,12 +2,17 @@ package robin
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/sacOO7/gowebsocket"
 	"strings"
 )
 
 func (r *Robin) Connect() (*gowebsocket.Socket, error) {
+
+	if len(r.UserToken) == 0 {
+		return nil, errors.New("UserToken cannot be empty")
+	}
 
 	var connString string
 

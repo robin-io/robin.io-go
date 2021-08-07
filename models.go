@@ -9,6 +9,7 @@ type Robin struct {
 	Secret string
 	Tls    bool
 	Conn   *gowebsocket.Socket
+	UserToken string
 }
 
 type UserToken struct {
