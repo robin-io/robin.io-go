@@ -7,7 +7,7 @@ import (
 
 func TestRobin_CreateUserToken(t *testing.T) {
 	robin := Robin{
-		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Secret: "NT-qBsdCDfPFYQkAKcfxMeNgSXvYTmqakOBVYRr",
 		Tls:    true,
 	}
 
@@ -22,10 +22,9 @@ func TestRobin_CreateUserToken(t *testing.T) {
 	fmt.Println(token)
 }
 
-
 func TestRobin_GetUserToken(t *testing.T) {
 	robin := Robin{
-		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Secret: "NT-qBsdCDfPFYQkAKcfxMeNgSXvYTmqakOBVYRr",
 		Tls:    true,
 	}
 
@@ -47,7 +46,7 @@ func TestRobin_SyncUserToken(t *testing.T) {
 	res, err := robin.SyncUserToken(UserToken{
 		UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE",
 		MetaData: map[string]interface{}{
-			"email":"elvis@acumen.com.ng",
+			"email": "elvis@acumen.com.ng",
 		},
 	})
 

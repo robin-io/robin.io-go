@@ -8,15 +8,11 @@ import (
 )
 
 var (
-	baseUrl = "https://robbin-api.herokuapp.com/api/v1"
-	url     = "robbin-api.herokuapp.com"
+	baseUrl = "https://api.robinapp.co/api/v1"
+	url     = "api.robinapp.co"
 	ws      = fmt.Sprintf(`ws://%s/ws`, url)
 	wss     = fmt.Sprintf(`wss://%s/ws`, url)
 )
-
-
-
-
 
 func (r *Robin) Connect(connected Fxn,
 	connect_error, disconnected ErrFxn,
