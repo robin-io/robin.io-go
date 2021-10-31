@@ -2,8 +2,6 @@
   Robin.io-py
 </h1>
 
-[![PyPI version](https://badge.fury.io/py/stream-chat.svg)](http://badge.fury.io/py/stream-chat) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/stream-chat.svg)
-
 
 ## Table of contents
 
