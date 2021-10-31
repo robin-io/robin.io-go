@@ -9,6 +9,8 @@ import (
 	"net/http"
 )
 
+// The CreateUserToken function creates a usertoken with the meta data provided.
+
 func (r *Robin) CreateUserToken(details UserToken) (UserTokenResponse, error) {
 	body, err := json.Marshal(map[string]interface{}{
 		"meta_data": details.MetaData,
