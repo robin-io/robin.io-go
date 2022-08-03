@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 )
 
@@ -141,4 +143,72 @@ func (r *Robin) SyncUserToken(details UserToken) (UserTokenResponse, error) {
 	}
 
 	return newBody.Data, nil
+}
+
+func (r *Robin) UpdateDisplayPhoto(userToken string, photo *multipart.FileHeader) (UserTokenResponse, error) {
+
+	body := &bytes.Buffer{}
+
+	writer := multipart.NewWriter(body)
+
+	part, err := writer.CreateFormFile("display_photo", photo.Filename)
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	file, err := photo.Open()
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	_, err = io.Copy(part, file)
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	err = writer.Close()
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, baseUrl, userToken), body)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	req.Header.Set("x-api-key", r.Secret)
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	defer resp.Body.Close()
+
+	bodyBuf, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	var newBody Response
+
+	if err := json.Unmarshal(bodyBuf, &newBody); err != nil {
+		return UserTokenResponse{}, err
+	}
+
+	if newBody.Error {
+		return UserTokenResponse{}, errors.New(newBody.Msg)
+	}
+
+	return newBody.Data, nil
+
 }
