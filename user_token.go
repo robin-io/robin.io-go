@@ -150,7 +150,7 @@ func (r *Robin) UpdateDisplayPhoto(userToken string, photo string) (UserTokenRes
 
 	form.Add("display_photo", photo)
 
-	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, "http://localhost:5001/api/v1", userToken), nil)
+	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, baseUrl, userToken), nil)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("x-api-key", r.Secret)
 	req.PostForm = form
