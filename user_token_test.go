@@ -2,8 +2,6 @@ package robin
 
 import (
 	"fmt"
-	"mime/multipart"
-	"os"
 	"testing"
 )
 
@@ -62,49 +60,15 @@ func TestRobin_SyncUserToken(t *testing.T) {
 // this will fail
 func TestRobin_UpdateDisplayPhoto(t *testing.T) {
 	robin := Robin{
-		Secret: "NT-XmIzEmWUlsrQYypZOFRlogDFvQUsaEuxMfZf",
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
 		Tls:    true,
 	}
 
-	path, err := os.Getwd()
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	path += "/test.png"
-
-	file, err := os.Open(path)
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	file1, err := getFileHeader(file)
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	res, err := robin.UpdateDisplayPhoto("FefXITDgAeTVrghcOHiimDVB", file1)
+	res, err := robin.UpdateDisplayPhoto("FefXITDgAeTVrghcOHiimDVB", "https://s3.us-east-2.amazonaws.com/robinapp.io/IMG_7159.jpeg")
 
 	if err != nil {
 		t.Error(err)
 	}
 
 	fmt.Println(res)
-}
-
-func getFileHeader(file *os.File) (*multipart.FileHeader, error) {
-	// get file size
-	fileStat, err := file.Stat()
-	if err != nil {
-		return nil, err
-	}
-
-	// create *multipart.FileHeader
-	return &multipart.FileHeader{
-		Filename: fileStat.Name(),
-		Size:     fileStat.Size(),
-	}, nil
 }

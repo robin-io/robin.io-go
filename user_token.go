@@ -5,10 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
-	"mime/multipart"
 	"net/http"
+	urlX "net/url"
 )
 
 // The CreateUserToken function creates a usertoken with the meta data provided.
@@ -145,39 +144,16 @@ func (r *Robin) SyncUserToken(details UserToken) (UserTokenResponse, error) {
 	return newBody.Data, nil
 }
 
-func (r *Robin) UpdateDisplayPhoto(userToken string, photo *multipart.FileHeader) (UserTokenResponse, error) {
+func (r *Robin) UpdateDisplayPhoto(userToken string, photo string) (UserTokenResponse, error) {
 
-	body := &bytes.Buffer{}
+	form := urlX.Values{}
 
-	writer := multipart.NewWriter(body)
+	form.Add("display_photo", photo)
 
-	part, err := writer.CreateFormFile("display_photo", photo.Filename)
-
-	if err != nil {
-		return UserTokenResponse{}, err
-	}
-
-	file, err := photo.Open()
-
-	if err != nil {
-		return UserTokenResponse{}, err
-	}
-
-	_, err = io.Copy(part, file)
-
-	if err != nil {
-		return UserTokenResponse{}, err
-	}
-
-	err = writer.Close()
-
-	if err != nil {
-		return UserTokenResponse{}, err
-	}
-
-	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, baseUrl, userToken), body)
-	req.Header.Set("Content-Type", writer.FormDataContentType())
+	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, "http://localhost:5001/api/v1", userToken), nil)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("x-api-key", r.Secret)
+	req.PostForm = form
 
 	if err != nil {
 		return UserTokenResponse{}, err

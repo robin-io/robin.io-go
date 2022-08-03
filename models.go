@@ -1,8 +1,9 @@
 package robin
 
 import (
-	"github.com/sacOO7/gowebsocket"
 	"time"
+
+	"github.com/sacOO7/gowebsocket"
 )
 
 type Robin struct {
@@ -29,8 +30,8 @@ type ConversationResponse struct {
 }
 
 type MessageResponse struct {
-	Error       bool                `json:"error"`
-	Msg         string              `json:"msg"`
+	Error       bool                  `json:"error"`
+	Msg         string                `json:"msg"`
 	MessageData []MessageResponseData `json:"data"`
 }
 
@@ -62,6 +63,7 @@ type UserTokenResponse struct {
 	UpdatedAt     time.Time                  `json:"updated_at"`
 	UserToken     string                     `json:"user_token"`
 	MetaData      map[string]interface{}     `json:"meta_data"`
+	DisplayPhoto  string                     `json:"display_photo"`
 }
 
 type Document struct {
