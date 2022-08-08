@@ -57,7 +57,6 @@ func TestRobin_SyncUserToken(t *testing.T) {
 	fmt.Println(res)
 }
 
-// this will fail
 func TestRobin_UpdateDisplayPhoto(t *testing.T) {
 	robin := Robin{
 		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
@@ -71,4 +70,19 @@ func TestRobin_UpdateDisplayPhoto(t *testing.T) {
 	}
 
 	fmt.Println(res)
+}
+
+func TestRobin_CheckUserTokenOnlineStatus(t *testing.T) {
+	robin := Robin{
+		Secret: "NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX",
+		Tls:    true,
+	}
+
+	res, err := robin.CheckUserTokenOnlineStatus("FefXITDgAeTVrghcOHiimDVB", "wwLpVXwNoZVitOPCOgrRZYBA", "kSSY6DKoMqyNQNoA")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println("RESULT", res)
 }

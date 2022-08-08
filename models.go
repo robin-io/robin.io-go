@@ -110,3 +110,9 @@ type MessageResponseData struct {
 	IsRead         bool                   `json:"is_read"`
 	IsDeleted      bool                   `json:"is_deleted"`
 }
+
+type UserTokenStatusResponse struct {
+	Error bool              `json:"error"`
+	Data  map[string]string `json:"data"`
+	Msg   string            `json:"msg"`
+}

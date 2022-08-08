@@ -188,3 +188,49 @@ func (r *Robin) UpdateDisplayPhoto(userToken string, photo string) (UserTokenRes
 	return newBody.Data, nil
 
 }
+
+func (r *Robin) CheckUserTokenOnlineStatus(userTokens ...string) (map[string]string, error) {
+	body, err := json.Marshal(map[string][]string{
+		"user_tokens": userTokens,
+	})
+
+	if err != nil {
+		return map[string]string{}, err
+	}
+
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/chat/user_token/get_online_status", baseUrl), bytes.NewBuffer(body))
+
+	if err != nil {
+		return map[string]string{}, err
+	}
+
+	req.Header.Set("x-api-key", r.Secret)
+
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return map[string]string{}, err
+	}
+
+	defer resp.Body.Close()
+
+	bodyBuf, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return map[string]string{}, err
+	}
+
+	var newBody UserTokenStatusResponse
+
+	if err := json.Unmarshal(bodyBuf, &newBody); err != nil {
+		return map[string]string{}, err
+	}
+
+	if newBody.Error {
+		return map[string]string{}, errors.New(newBody.Msg)
+	}
+
+	return newBody.Data, nil
+}
