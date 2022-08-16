@@ -14,7 +14,7 @@ var (
 	wss     = fmt.Sprintf(`wss://%s/ws`, url)
 )
 
-func (r *Robin) Connect(connected Fxn,
+func (r *Robin) Connect(user_token string, connected Fxn,
 	connect_error, disconnected ErrFxn,
 	text_recieved, ping, pong MsgFxn,
 	binary ByteFxn) (*gowebsocket.Socket, error) {
@@ -26,7 +26,7 @@ func (r *Robin) Connect(connected Fxn,
 	} else {
 		conn_string = ws
 	}
-	socket := gowebsocket.New(fmt.Sprintf(`%s/%s`, conn_string, r.Secret))
+	socket := gowebsocket.New(fmt.Sprintf(`%s/%s/%s`, conn_string, r.Secret, user_token))
 
 	socket.OnConnected = connected
 	socket.OnConnectError = connect_error

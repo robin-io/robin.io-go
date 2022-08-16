@@ -98,7 +98,10 @@ func connected(socket gowebsocket.Socket) {}
 func disconnected(err error, socket gowebsocket.Socket) {}
 // call back for when a message is recieved via the connection
 func text_recieved(msg string, socket gowebsocket.Socket) {}
-conn, err := robin.Connect(connected, nil, disconnected, text_recieved, nil, nil, nil)
+
+user_token := "<USER_TOKEN>"
+
+conn, err := robin.Connect(user_token, connected, nil, disconnected, text_recieved, nil, nil, nil)
 
 if err != nil {
     println(err)
