@@ -121,9 +121,9 @@ robin := Robin{
     Secret: "NT-QuNtKo......JwGrymaVxQX",
     Tls:    true,
 }
-/* 
-func (*Robin).CreateConversation(senderName string, senderToken string, receiverToken string, receiverName string) (ConversationResponseData, error)
-*/
+
+// func (*Robin).CreateConversation(senderName string, senderToken string, receiverToken string, receiverName string) (ConversationResponseData, error)
+
 conv, err := robin.CreateConversation("elvis", "YFXOK....BaqKgDWOhE", "YFXOKV...gDWOhE", "jesse")
 
 if err != nil {
@@ -137,9 +137,9 @@ notify := Robin{
     Tls:    true,
 }
 
-/* 
-func (*Robin).CreateGroupConversation(name string, moderator UserToken, participants []UserToken) (ConversationResponseData, error)
-*/
+
+// func (*Robin).CreateGroupConversation(name string, moderator UserToken, participants []UserToken) (ConversationResponseData, error)
+
 
 conv, err := notify.CreateGroupConversation("The council",
     UserToken{UserToken: "YFXOKVyKBGv...KgDWOhE"},
@@ -164,14 +164,12 @@ if err != nil {
 
 ### Step 6: Send a message
 
-Finally, send a message
+Finally, send a message to a conversation
 
 ```go
-err := robin.SendMessage("<channel_name>", map[string]interface{}{
-    "name":"elvis",
-    "user_token":"TKSHSqww....aA",
-    "msg":"hello from robin",
-})
+err := robin.SendMessageToConversation("<channel_name>", map[string]interface{}{
+    "msg":"Hello from Robin",
+}, "TKSHSqww....aA", "Elvis")
 ```
 
 #### Options

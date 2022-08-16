@@ -78,6 +78,8 @@ type Message struct {
 	Channel        string                 `json:"channel"`
 	Content        map[string]interface{} `json:"content"`
 	ConversationId string                 `json:"conversation_id"`
+	SenderToken    string                 `json:"sender_token"`
+	SenderName     string                 `json:"sender_name"`
 }
 
 type Fxn func(gowebsocket.Socket)

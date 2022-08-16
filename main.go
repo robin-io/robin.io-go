@@ -76,12 +76,15 @@ func (r *Robin) SendMessage(channel string, content map[string]interface{}) erro
 
 	return nil
 }
-func (r *Robin) SendConversationMessage(channel, conversation_id string, content map[string]interface{}) error {
+
+func (r *Robin) SendMessageToConversation(channel, conversation_id string, content map[string]interface{}, sender_token, sender_name string) error {
 	msg := Message{
 		Type:           1,
 		Channel:        channel,
 		Content:        content,
 		ConversationId: conversation_id,
+		SenderName:     sender_name,
+		SenderToken:    sender_token,
 	}
 
 	body, err := json.Marshal(msg)
