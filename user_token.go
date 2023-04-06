@@ -7,7 +7,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	urlX "net/url"
+	urlx "net/url"
+	"strings"
 )
 
 // The CreateUserToken function creates a usertoken with the meta data provided.
@@ -146,14 +147,13 @@ func (r *Robin) SyncUserToken(details UserToken) (UserTokenResponse, error) {
 
 func (r *Robin) UpdateDisplayPhoto(userToken string, photo string) (UserTokenResponse, error) {
 
-	form := urlX.Values{}
+	form := urlx.Values{}
 
 	form.Add("display_photo", photo)
 
-	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, baseUrl, userToken), nil)
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, baseUrl, userToken), strings.NewReader(form.Encode()))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("x-api-key", r.Secret)
-	req.PostForm = form
 
 	if err != nil {
 		return UserTokenResponse{}, err
