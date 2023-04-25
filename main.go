@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	baseUrl = "https://dev.robinapp.io/api/v1"
-	url     = "dev.robinapp.io"
+	baseUrl = "https://api.robinapp.io/api/v1"
+	url     = "api.robinapp.io"
 	ws      = fmt.Sprintf(`ws://%s/ws`, url)
 	wss     = fmt.Sprintf(`wss://%s/ws`, url)
 )
