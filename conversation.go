@@ -9,12 +9,11 @@ import (
 	"net/http"
 )
 
-func (r *Robin) CreateConversation(senderName, senderToken, receiverToken, receiverName string) (ConversationResponseData, error) {
+func (r *Robin) CreateConversation(senderName, receiverToken, receiverName string) (ConversationResponseData, error) {
 	body, err := json.Marshal(map[string]string{
-		"sender_name":   senderName,
-		"sender_token":     senderToken,
-		"receiver_token":   receiverToken,
-		"receiver_name": receiverName,
+		"sender_name":    senderName,
+		"receiver_token": receiverToken,
+		"receiver_name":  receiverName,
 	})
 
 	if err != nil {
@@ -29,7 +28,7 @@ func (r *Robin) CreateConversation(senderName, senderToken, receiverToken, recei
 		return ConversationResponseData{}, err
 	}
 
-	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -59,8 +58,8 @@ func (r *Robin) CreateConversation(senderName, senderToken, receiverToken, recei
 
 func (r *Robin) CreateGroupConversation(name string, moderator UserToken, participants []UserToken) (ConversationResponseData, error) {
 	body, err := json.Marshal(map[string]interface{}{
-		"name" : name,
-		"moderator":moderator,
+		"name":         name,
+		"moderator":    moderator,
 		"participants": participants,
 	})
 
@@ -76,7 +75,7 @@ func (r *Robin) CreateGroupConversation(name string, moderator UserToken, partic
 		return ConversationResponseData{}, err
 	}
 
-	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -115,7 +114,7 @@ func (r *Robin) GetConversationMessages(id string) ([]MessageResponseData, error
 		return []MessageResponseData{}, err
 	}
 
-	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -170,6 +169,7 @@ func (r *Robin) SearchConversation(id, text string) ([]MessageResponseData, erro
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -211,6 +211,7 @@ func (r *Robin) DeleteMessage(id string) error {
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -239,7 +240,7 @@ func (r *Robin) DeleteMessage(id string) error {
 	return nil
 }
 
-func (r *Robin) AssignGroupModerator(userToken, groupId string) (ConversationResponseData, error){
+func (r *Robin) AssignGroupModerator(userToken, groupId string) (ConversationResponseData, error) {
 	if len(userToken) == 0 {
 		return ConversationResponseData{}, errors.New("userToken can not be empty")
 	}
@@ -260,6 +261,7 @@ func (r *Robin) AssignGroupModerator(userToken, groupId string) (ConversationRes
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -310,6 +312,7 @@ func (r *Robin) AddGroupParticipants(groupId string, participants []UserToken) (
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -338,7 +341,7 @@ func (r *Robin) AddGroupParticipants(groupId string, participants []UserToken) (
 	return newBody.ConversationData, nil
 }
 
-func (r *Robin) RemoveGroupParticipant(userToken, groupId string) (ConversationResponseData, error){
+func (r *Robin) RemoveGroupParticipant(userToken, groupId string) (ConversationResponseData, error) {
 	if len(userToken) == 0 {
 		return ConversationResponseData{}, errors.New("userToken can not be empty")
 	}
@@ -359,6 +362,7 @@ func (r *Robin) RemoveGroupParticipant(userToken, groupId string) (ConversationR
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
