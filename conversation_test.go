@@ -11,7 +11,7 @@ func TestConversationCreation(t *testing.T) {
 		Tls:    true,
 	}
 
-	conv, err := notify.CreateConversation("elvis", "YFXOKVyKBGvHxuBaqKgDWOhE", "YFXOKVyKBGvHxuBaqKgDWOhE", "jesse")
+	conv, err := notify.CreateConversation("elvis", "YFXOKVyKBGvHxuBaqKgDWOhE", "jesse")
 
 	if err != nil {
 		t.Error(err)
@@ -28,8 +28,7 @@ func TestGroupConversationCreation(t *testing.T) {
 
 	conv, err := notify.CreateGroupConversation("Elvis & sons",
 		UserToken{UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE"},
-		[]UserToken{{UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE"},
-		})
+		[]UserToken{{UserToken: "YFXOKVyKBGvHxuBaqKgDWOhE"}})
 
 	if err != nil {
 		t.Error(err)
@@ -79,7 +78,6 @@ func TestRobin_DeleteMessage(t *testing.T) {
 		t.Error(err)
 	}
 }
-
 
 func TestRobin_AssignGroupModerator(t *testing.T) {
 	notify := Robin{

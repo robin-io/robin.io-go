@@ -7,9 +7,10 @@ import (
 )
 
 type Robin struct {
-	Secret string
-	Tls    bool
-	Conn   *gowebsocket.Socket
+	Secret  string
+	Session string
+	Tls     bool
+	Conn    *gowebsocket.Socket
 }
 
 type UserToken struct {
@@ -117,4 +118,10 @@ type UserTokenStatusResponse struct {
 	Error bool              `json:"error"`
 	Data  map[string]string `json:"data"`
 	Msg   string            `json:"msg"`
+}
+
+type SessionResponse struct {
+	Error bool   `json:"error"`
+	Token string `json:"token"`
+	Msg   string `json:"msg"`
 }

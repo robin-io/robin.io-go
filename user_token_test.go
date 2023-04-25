@@ -1,9 +1,31 @@
 package robin
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 )
+
+func TestRobin_GetSession(t *testing.T) {
+	robin := Robin{
+		Secret: "NT-UAzQwycFjXwvGfeciRyVumTWjfUFCImrRFQH",
+		Tls:    true,
+	}
+
+	session, err := robin.GetSession("CwJUzaISPWhkoEseoLteRLDn")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(session) == 0 {
+		t.Error(errors.New("invalid session length, can not be 0"))
+	}
+
+	if len(robin.Session) == 0 {
+		t.Error(errors.New("invalid session length, can not be 0"))
+	}
+}
 
 func TestRobin_CreateUserToken(t *testing.T) {
 	robin := Robin{
@@ -28,7 +50,7 @@ func TestRobin_GetUserToken(t *testing.T) {
 		Tls:    true,
 	}
 
-	res, err := robin.GetUserToken("YFXOKVyKBGvHxuBaqKgDWOhE")
+	res, err := robin.GetUserToken()
 
 	if err != nil {
 		t.Error(err)
@@ -63,7 +85,7 @@ func TestRobin_UpdateDisplayPhoto(t *testing.T) {
 		Tls:    true,
 	}
 
-	res, err := robin.UpdateDisplayPhoto("FefXITDgAeTVrghcOHiimDVB", "https://s3.us-east-2.amazonaws.com/robinapp.io/IMG_7159.jpeg")
+	res, err := robin.UpdateDisplayPhoto("https://s3.us-east-2.amazonaws.com/robinapp.io/IMG_7159.jpeg")
 
 	if err != nil {
 		t.Error(err)

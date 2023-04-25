@@ -61,16 +61,16 @@ func (r *Robin) CreateUserToken(details UserToken) (UserTokenResponse, error) {
 
 // get conversations (Get User Token)
 
-func (r *Robin) GetUserToken(userToken string) (interface{}, error) {
+func (r *Robin) GetUserToken() (interface{}, error) {
 	client := &http.Client{}
 
-	req, err := http.NewRequest("GET", fmt.Sprintf(`%s/chat/user_token/%s`, baseUrl, userToken), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf(`%s/chat/user_token`, baseUrl), nil)
 
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -111,13 +111,13 @@ func (r *Robin) SyncUserToken(details UserToken) (UserTokenResponse, error) {
 
 	client := &http.Client{}
 
-	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token/%s`, baseUrl, details.UserToken), bytes.NewBuffer(body))
+	req, err := http.NewRequest("PUT", fmt.Sprintf(`%s/chat/user_token`, baseUrl), bytes.NewBuffer(body))
 
 	if err != nil {
 		return UserTokenResponse{}, err
 	}
 
-	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	resp, err := client.Do(req)
 
@@ -145,15 +145,15 @@ func (r *Robin) SyncUserToken(details UserToken) (UserTokenResponse, error) {
 	return newBody.Data, nil
 }
 
-func (r *Robin) UpdateDisplayPhoto(userToken string, photo string) (UserTokenResponse, error) {
+func (r *Robin) UpdateDisplayPhoto(photo string) (UserTokenResponse, error) {
 
 	form := urlx.Values{}
 
 	form.Add("display_photo", photo)
 
-	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf(`%s/chat/user_token/display_photo/%s`, baseUrl, userToken), strings.NewReader(form.Encode()))
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf(`%s/chat/user_token/display_photo`, baseUrl), strings.NewReader(form.Encode()))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	if err != nil {
 		return UserTokenResponse{}, err
@@ -205,6 +205,7 @@ func (r *Robin) CheckUserTokenOnlineStatus(userTokens ...string) (map[string]str
 	}
 
 	req.Header.Set("x-api-key", r.Secret)
+	req.Header.Set("x-robin-session", r.Session)
 
 	client := &http.Client{}
 
