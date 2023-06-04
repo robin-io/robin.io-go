@@ -89,7 +89,12 @@ if err != nil {
 }
 ```
 
-Connect to the Robin server using the **USER_TOKEN** you just created.
+Connect to the Robin server. To connect to the robin server you need to generate a session token.
+
+```go
+sessionToken, err := robin.getSession("<USER_TOKEN>")
+// the sessionToken returned gets stored in the robin instance and is accessed by the methods that require it
+```
 
 ```go
 // call back for a successful connection
@@ -124,7 +129,7 @@ robin := Robin{
 
 // func (*Robin).CreateConversation(senderName string, senderToken string, receiverToken string, receiverName string) (ConversationResponseData, error)
 
-conv, err := robin.CreateConversation("elvis", "YFXOK....BaqKgDWOhE", "YFXOKV...gDWOhE", "jesse")
+conv, err := robin.CreateConversation("YFXOK....BaqKgDWOhE", "YFXOKV...gDWOhE", "jesse")
 
 if err != nil {
     fmt.Println(err)
@@ -187,7 +192,7 @@ The following are general attributes used in Robin:
 
 If you have any comments or questions regarding bugs and feature requests, visit [Robinapp community](https://community.robinapp.co).
 
-[View Documentation Here]().
+[View Documentation Here](https://docs.robinapp.co/messaging-with-robin/add-messaging-with-core-sdks/go).
 
 ## License
 

@@ -15,6 +15,7 @@ type Robin struct {
 
 type UserToken struct {
 	UserToken string                 `json:"user_token"`
+	Username  string                 `json:"username"`
 	MetaData  map[string]interface{} `json:"meta_data"`
 }
 
@@ -49,6 +50,8 @@ type ConversationResponseData struct {
 	ReceiverToken string        `json:"receiver_token"`
 	SenderName    string        `json:"sender_name"`
 	SenderToken   string        `json:"sender_token"`
+	DisplayName   string        `json:"display_name"`
+	IsDisabled    bool          `json:"is_disabled"`
 }
 
 type Participant struct {
